@@ -4,7 +4,7 @@ from dataclasses import dataclass
 class Product:
     title: str
     price: str
-#     description: str
+    description: str
 #     tags: str
 # #    gallery: str
 #     advantageName_1: str

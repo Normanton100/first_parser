@@ -27,7 +27,9 @@ def parser(url:str, max_item: int):
             soup_page = BeautifulSoup(res_page.text, "lxml")
             title = soup_page.find(class_="is-visible").text[3:]
             price = soup_page.find("span", class_="counter").text
-            # description = soup_page.
+            description = soup_page.find("div", class_="contact-info col py-5 mt-lg-0 mt-md-10 flex-column mt-8").find_all(["p", "h4", "ul"])
+            #description = soup_page.find("div", class_="contact-info col py-5 mt-lg-0 mt-md-10 flex-column mt-8").select("p,h4,ul")
+
             # tags = soup_page.
             # #gallery = soup_page.
             # advantageName_1 = soup_page.
@@ -51,30 +53,31 @@ def parser(url:str, max_item: int):
 
             list_product.append(Product(title=title,
                                         price=price,
-                                        # description=description,
-                                          # tags=tags,
-                                          # #gallery=gallery,
-                                          # advantageName_1=advantageName_1,
-                                          # advantageValue_1=advantageValue_1,
-                                          # advantageName_2=advantageName_2,
-                                          # advantageValue_2=advantageValue_2,
-                                          # advantageName_3=advantageName_3,
-                                          # advantageValue_3=advantageValue_3,
-                                          # advantageName_4=advantageName_4,
-                                          # advantageValue_4=advantageValue_4,
-                                          # advantageName_5=advantageName_5,
-                                          # advantageValue_5=advantageValue_5,
-                                          # advantageName_6=advantageName_6,
-                                          # advantageValue_6=advantageValue_6,
-                                          # advantageName_7=advantageName_7,
-                                          # advantageValue_7=advantageValue_7,
-                                          # advantageName_8=advantageName_8,
-                                          # advantageValue_8=advantageValue_8,
-                                          # advantageName_9=advantageName_9,
-                                          # advantageValue_9=advantageValue_9
+                                        description=description
+                                        # tags=tags,
+                                        # #gallery=gallery,
+                                        # advantageName_1=advantageName_1,
+                                        # advantageValue_1=advantageValue_1,
+                                        # advantageName_2=advantageName_2,
+                                        # advantageValue_2=advantageValue_2,
+                                        # advantageName_3=advantageName_3,
+                                        # advantageValue_3=advantageValue_3,
+                                        # advantageName_4=advantageName_4,
+                                        # advantageValue_4=advantageValue_4,
+                                        # advantageName_5=advantageName_5,
+                                        # advantageValue_5=advantageValue_5,
+                                        # advantageName_6=advantageName_6,
+                                        # advantageValue_6=advantageValue_6,
+                                        # advantageName_7=advantageName_7,
+                                        # advantageValue_7=advantageValue_7,
+                                        # advantageName_8=advantageName_8,
+                                        # advantageValue_8=advantageValue_8,
+                                        # advantageName_9=advantageName_9,
+                                        # advantageValue_9=advantageValue_9
                                         ))
             print(title)
             print(price)
+            print(description)
         write_csv(list_product)
 
         page += 1
@@ -83,11 +86,11 @@ def parser(url:str, max_item: int):
 
 def create_csv():
     with open(f"glavsnab.csv", mode="w", newline="") as file:
-        writer = csv.writer(file)
+        writer = csv.writer(file, delimiter=";")
         writer.writerow([
             "title",
-            "price"
-            # "description",
+            "price",
+            "description"
             # "tags",
             # #"gallery",
             # "advantageName_1",
@@ -112,12 +115,12 @@ def create_csv():
 
 def write_csv(soup_page: list[Product]):
     with open(f"glavsnab.csv", mode="a", newline="", encoding='utf-8') as file:
-        writer = csv.writer(file)
+        writer = csv.writer(file, delimiter=";")
         for product in soup_page:
             writer.writerow([
                 product.title,
-                product.price
-                # product.description,
+                product.price,
+                product.description
                 # product.tags,
                 # #product.gallery,
                 # product.advantageName_1,
@@ -141,5 +144,5 @@ def write_csv(soup_page: list[Product]):
             ])
 
 if __name__ == "__main__":
-    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=40)
+    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=3)
 
