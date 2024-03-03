@@ -33,8 +33,20 @@ def parser(url:str, max_item: int):
             for i in tags_1.find_all("img"):
                 tags += f"{i.get('title')},"
             tags = tags[:-1]
-
             # #gallery = soup_page.
+            atribut_box = soup_page.find("div", class_="row row-cols-lg-4 row-cols-md-4 row-cols-2 mb-n6 icon-box-shape-animation")
+            advantage = 1
+            # advantageName_ =
+            # advantageValue_
+            # for i in atribut_box.find_all("div", class_="content"):
+            #     advantageName_ = f'{advantageName_.find("span", class_="sub-title").text}'
+            #     advantageValue_ = i.find("h3", class_="title counter").text
+            #     advantage += 1
+            while advantage >= 9:
+
+
+
+
             # advantageName_1 = soup_page.
             # advantageValue_1 = soup_page.
             # advantageName_2 = soup_page.
@@ -57,10 +69,10 @@ def parser(url:str, max_item: int):
             list_product.append(Product(title=title,
                                         price=price,
                                         description=description,
-                                        tags=tags
+                                        tags=tags,
                                         # #gallery=gallery,
-                                        # advantageName_1=advantageName_1,
-                                        # advantageValue_1=advantageValue_1,
+                                        advantageName_1=advantageName_1,
+                                        advantageValue_1=advantageValue_1
                                         # advantageName_2=advantageName_2,
                                         # advantageValue_2=advantageValue_2,
                                         # advantageName_3=advantageName_3,
@@ -95,10 +107,10 @@ def create_csv():
             "title",
             "price",
             "description",
-            "tags"
+            "tags",
             # #"gallery",
-            # "advantageName_1",
-            # "advantageValue_1",
+            "advantageName_1",
+            "advantageValue_1"
             # "advantageName_2",
             # "advantageValue_2",
             # "advantageName_3",
@@ -125,10 +137,10 @@ def write_csv(soup_page: list[Product]):
                 product.title,
                 product.price,
                 product.description,
-                product.tags
+                product.tags,
                 # #product.gallery,
-                # product.advantageName_1,
-                # product.advantageValue_1,
+                product.advantageName_1,
+                product.advantageValue_1
                 # product.advantageName_2,
                 # product.advantageValue_2,
                 # product.advantageName_3,
