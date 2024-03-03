@@ -28,9 +28,12 @@ def parser(url:str, max_item: int):
             title = soup_page.find(class_="is-visible").text[3:]
             price = soup_page.find("span", class_="counter").text
             description = soup_page.find("div", class_="contact-info col py-5 mt-lg-0 mt-md-10 flex-column mt-8").find_all(["p", "h4", "ul"])
-            #description = soup_page.find("div", class_="contact-info col py-5 mt-lg-0 mt-md-10 flex-column mt-8").select("p,h4,ul")
+            tags_1 = soup_page.find("div", class_="row mb-n6 icon-box-shape-animation flex-wrap justify-content-center")
+            tags = ""
+            for i in tags_1.find_all("img"):
+                tags += f"{i.get('title')},"
+            tags = tags[:-1]
 
-            # tags = soup_page.
             # #gallery = soup_page.
             # advantageName_1 = soup_page.
             # advantageValue_1 = soup_page.
@@ -53,8 +56,8 @@ def parser(url:str, max_item: int):
 
             list_product.append(Product(title=title,
                                         price=price,
-                                        description=description
-                                        # tags=tags,
+                                        description=description,
+                                        tags=tags
                                         # #gallery=gallery,
                                         # advantageName_1=advantageName_1,
                                         # advantageValue_1=advantageValue_1,
@@ -78,6 +81,7 @@ def parser(url:str, max_item: int):
             print(title)
             print(price)
             print(description)
+            print(tags)
         write_csv(list_product)
 
         page += 1
@@ -90,8 +94,8 @@ def create_csv():
         writer.writerow([
             "title",
             "price",
-            "description"
-            # "tags",
+            "description",
+            "tags"
             # #"gallery",
             # "advantageName_1",
             # "advantageValue_1",
@@ -120,8 +124,8 @@ def write_csv(soup_page: list[Product]):
             writer.writerow([
                 product.title,
                 product.price,
-                product.description
-                # product.tags,
+                product.description,
+                product.tags
                 # #product.gallery,
                 # product.advantageName_1,
                 # product.advantageValue_1,
@@ -144,5 +148,5 @@ def write_csv(soup_page: list[Product]):
             ])
 
 if __name__ == "__main__":
-    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=3)
+    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=1)
 

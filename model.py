@@ -5,7 +5,7 @@ class Product:
     title: str
     price: str
     description: str
-#     tags: str
+    tags: str
 # #    gallery: str
 #     advantageName_1: str
 #     advantageValue_1: str
