@@ -4,7 +4,6 @@ import csv
 from model import Product
 from fake_useragent import UserAgent
 headers = UserAgent()
-
 def parser(url:str, max_item: int):
     create_csv()
     page = 1
@@ -20,10 +19,8 @@ def parser(url:str, max_item: int):
                 break
             count_items += 1
             name = product.find("a").get("href")
-
             print(name)
             res_page = requests.get(f"https://luxury-yacht-brokerage.com{name}", headers={'user-agent':f'{headers.random}'})
-            #print(res_page)
             soup_page = BeautifulSoup(res_page.text, "lxml")
             title = soup_page.find(class_="is-visible").text[3:]
             price = soup_page.find("span", class_="counter").text
@@ -34,52 +31,50 @@ def parser(url:str, max_item: int):
                 tags += f"{i.get('title')},"
             tags = tags[:-1]
             # #gallery = soup_page.
-            atribut_box = soup_page.find("div", class_="row row-cols-lg-4 row-cols-md-4 row-cols-2 mb-n6 icon-box-shape-animation")
+            atribut_box = soup_page.find("div", class_="row row-cols-lg-4 row-cols-md-4 row-cols-2 mb-n6 icon-box-shape-animation").find_all("div", class_="icon-box box-border text-center")
 
-            advantageName_1 = atribut_box.find_all("span", class_="sub-title")[0].text
-            advantageValue_1 = atribut_box.find_all("h3", class_="title counter")[0].text
-            advantageName_2 = atribut_box.find_all("span", class_="sub-title")[1].text
-            advantageValue_2 = atribut_box.find_all("h3", class_="title counter")[1].text
-            advantageName_3 = atribut_box.find_all("span", class_="sub-title")[2].text
-            advantageValue_3 = atribut_box.find_all("h3", class_="title counter")[2].text
-            advantageName_4 = atribut_box.find_all("span", class_="sub-title")[3].text
-            advantageValue_4 = atribut_box.find_all("h3", class_="title counter")[3].text
-            advantageName_5 = atribut_box.find_all("span", class_="sub-title")[4].text
-            advantageValue_5 = atribut_box.find_all("h3", class_="title counter")[4].text
-            advantageName_6 = atribut_box.find_all("span", class_="sub-title")[5].text
-            advantageValue_6 = atribut_box.find_all("h3", class_="title counter")[5].text
-            advantageName_7 = atribut_box.find_all("span", class_="sub-title")[6].text
-            advantageValue_7 = atribut_box.find_all("h3", class_="title counter")[6].text
+            advantageName_1 = atribut_box[0].find("span", class_="sub-title").text
+            advantageValue_1 = atribut_box[0].find("h3", class_="title counter").text
+            advantageName_2 = atribut_box[1].find("span", class_="sub-title").text
+            advantageValue_2 = atribut_box[1].find("h3", class_="title counter").text
+            advantageName_3 = atribut_box[2].find("span", class_="sub-title").text
+            advantageValue_3 = atribut_box[2].find("h3", class_="title counter").text
+            advantageName_4 = atribut_box[3].find("span", class_="sub-title").text
+            if atribut_box[3].find("h3", class_="title counter"):
+                advantageValue_4 = atribut_box[3].find("h3", class_="title counter").text
+            else: advantageValue_4 = atribut_box[3].find("h3", class_="title").text
+            advantageName_5 = atribut_box[4].find("span", class_="sub-title").text
+            if atribut_box[4].find("h3", class_="title counter"):
+                advantageValue_5 = atribut_box[4].find("h3", class_="title counter").text
+            else: advantageValue_5 = atribut_box[4].find("h3", class_="title").text
+            advantageName_6 = atribut_box[5].find("span", class_="sub-title").text
+            if atribut_box[5].find("h3", class_="title counter"):
+                advantageValue_6 = atribut_box[5].find("h3", class_="title counter").text
+            else: advantageValue_6 = atribut_box[5].find("h3", class_="title").text
             try:
-                advantageName_8 = atribut_box.find_all("span", class_="sub-title")[7].text
+                advantageName_7 = atribut_box[6].find("span", class_="sub-title").text
+            except IndexError:
+                advantageName_7 = ""
+            try:
+                advantageValue_7 = atribut_box[6].find("h3", class_="title counter").text
+            except IndexError:
+                advantageValue_7 = ""
+            try:
+                advantageName_8 = atribut_box[7].find("span", class_="sub-title").text
             except IndexError:
                 advantageName_8 = ""
             try:
-                advantageValue_8 = atribut_box.find_all("h3", class_="title counter")[7].text
+                advantageValue_8 = atribut_box[7].find("h3", class_="title counter").text
             except IndexError:
                 advantageValue_8 = ""
             try:
-                advantageName_9 = atribut_box.find_all("span", class_="sub-title")[8].text
+                advantageName_9 = atribut_box[8].find("span", class_="sub-title").text
             except IndexError:
                 advantageName_9 = ""
             try:
-                advantageValue_9 = atribut_box.find_all("h3", class_="title counter")[8].text
+                advantageValue_9 = atribut_box[8].find("h3", class_="title counter").text
             except IndexError:
                 advantageValue_9 = ""
-            # if atribut_box.find_all("span", class_="sub-title")[7].text == True:
-            #     advantageName_8 = atribut_box.find_all("span", class_="sub-title")[7].text
-            # else: advantageName_8 = ""
-            # if atribut_box.find_all("h3", class_="title counter")[7].text == True:
-            #     advantageValue_8 = atribut_box.find_all("h3", class_="title counter")[7].text
-            # else: advantageValue_8 = ""
-            # advName_9 = atribut_box.find_all("span", class_="sub-title")[8].text
-            # if advName_9:
-            #     advantageName_9 = advName_9
-            # else: advantageName_9 = ""
-            # advValue_9 = atribut_box.find_all("h3", class_="title counter")[8].text
-            # if advValue_9:
-            #     advantageValue_9 = advValue_9
-            # else: advantageValue_9 = ""
 
             list_product.append(Product(title=title,
                                         price=price,
@@ -106,27 +101,7 @@ def parser(url:str, max_item: int):
                                         advantageValue_9=advantageValue_9
                                         ))
             print(title)
-            print(price)
-            print(description)
-            print(tags)
-            print(advantageName_1)
-            print(advantageValue_1)
-            print(advantageName_2)
-            print(advantageValue_2)
-            print(advantageName_3)
-            print(advantageValue_3)
-            print(advantageName_4)
-            print(advantageValue_4)
-            print(advantageName_5)
-            print(advantageValue_5)
-            print(advantageName_6)
-            print(advantageValue_6)
-            print(advantageName_7)
-            print(advantageValue_7)
-            print(advantageName_8)
-            print(advantageValue_8)
-            print(advantageName_9)
-            print(advantageValue_9)
+
         write_csv(list_product)
 
         page += 1
@@ -193,5 +168,5 @@ def write_csv(soup_page: list[Product]):
             ])
 
 if __name__ == "__main__":
-    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=3)
+    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=40)
 
