@@ -5,7 +5,7 @@ from model import Product
 from fake_useragent import UserAgent
 headers = UserAgent()
 def parser(url:str, max_item: int):
-    create_csv()
+    #create_csv()
     page = 1
     count_items = 0
     while max_item > count_items:
@@ -30,14 +30,26 @@ def parser(url:str, max_item: int):
             for i in tags_1.find_all("img"):
                 tags += f"{i.get('title')},"
             tags = tags[:-1]
+
+
             page_gallery = soup_page.find("div", class_="container-fluid pl-xl-16 pl-lg-3 pl-md-3 pl-sm-3 pl-3 pr-xl-16 pr-lg-3 pr-md-3 pr-sm-3 pr-3").find_all("div", class_="swiper-slide text-center")
             for link in page_gallery:
                 url_gallery = link.a.get("href")
-                img = requests.get(f"https://luxury-yacht-brokerage.com{url_gallery}", stream = True)
-                name_gallery = url_gallery.split("/")[-1]
-                file_gallery = open(f'img/{title}/{name_gallery}', 'bw')
-                print(url_gallery)
-            gallery =
+
+                img = requests.get(f"https://luxury-yacht-brokerage.com/{url_gallery}", headers={'user-agent':f'{headers.random}'})
+
+
+                #img.raise_for_status()
+                try:
+                    img.raise_for_status()
+                    print(url_gallery)
+                    name_gallery = url_gallery.split("/")[-1]
+                    with open(f'img/{title}/{name_gallery}', 'wb') as file_gallery:
+                        file_gallery.write(img.content)
+                except requests.exceptions.HTTPError:
+                    continue
+
+            #gallery =
 
             atribut_box = soup_page.find("div", class_="row row-cols-lg-4 row-cols-md-4 row-cols-2 mb-n6 icon-box-shape-animation").find_all("div", class_="icon-box box-border text-center")
             advantageName_1 = atribut_box[0].find("span", class_="sub-title").text
@@ -109,7 +121,7 @@ def parser(url:str, max_item: int):
                                         ))
             print(title)
 
-        write_csv(list_product)
+        #write_csv(list_product)
 
         page += 1
 
