@@ -30,9 +30,16 @@ def parser(url:str, max_item: int):
             for i in tags_1.find_all("img"):
                 tags += f"{i.get('title')},"
             tags = tags[:-1]
-            # #gallery = soup_page.
-            atribut_box = soup_page.find("div", class_="row row-cols-lg-4 row-cols-md-4 row-cols-2 mb-n6 icon-box-shape-animation").find_all("div", class_="icon-box box-border text-center")
+            page_gallery = soup_page.find("div", class_="container-fluid pl-xl-16 pl-lg-3 pl-md-3 pl-sm-3 pl-3 pr-xl-16 pr-lg-3 pr-md-3 pr-sm-3 pr-3").find_all("div", class_="swiper-slide text-center")
+            for link in page_gallery:
+                url_gallery = link.a.get("href")
+                img = requests.get(f"https://luxury-yacht-brokerage.com{url_gallery}", stream = True)
+                name_gallery = url_gallery.split("/")[-1]
+                file_gallery = open(f'img/{title}/{name_gallery}', 'bw')
+                print(url_gallery)
+            gallery =
 
+            atribut_box = soup_page.find("div", class_="row row-cols-lg-4 row-cols-md-4 row-cols-2 mb-n6 icon-box-shape-animation").find_all("div", class_="icon-box box-border text-center")
             advantageName_1 = atribut_box[0].find("span", class_="sub-title").text
             advantageValue_1 = atribut_box[0].find("h3", class_="title counter").text
             advantageName_2 = atribut_box[1].find("span", class_="sub-title").text
@@ -168,5 +175,5 @@ def write_csv(soup_page: list[Product]):
             ])
 
 if __name__ == "__main__":
-    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=40)
+    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=1)
 
