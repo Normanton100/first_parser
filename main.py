@@ -193,5 +193,5 @@ def write_csv(soup_page: list[Product]):
             ])
 
 if __name__ == "__main__":
-    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=2)
+    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=40)
 
