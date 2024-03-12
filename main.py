@@ -3,7 +3,12 @@ from bs4 import BeautifulSoup
 import csv
 from model import Product
 from fake_useragent import UserAgent
+import os
 headers = UserAgent()
+if os.path.exists("img"):
+    pass
+else:
+    os.mkdir("img")
 def parser(url:str, max_item: int):
     #create_csv()
     page = 1
@@ -23,6 +28,10 @@ def parser(url:str, max_item: int):
             res_page = requests.get(f"https://luxury-yacht-brokerage.com{name}", headers={'user-agent':f'{headers.random}'})
             soup_page = BeautifulSoup(res_page.text, "lxml")
             title = soup_page.find(class_="is-visible").text[3:]
+            if os.path.exists(f"img/{title}"):
+                pass
+            else:
+                os.mkdir(f"img/{title}")
             price = soup_page.find("span", class_="counter").text
             description = soup_page.find("div", class_="contact-info col py-5 mt-lg-0 mt-md-10 flex-column mt-8").find_all(["p", "h4", "ul"])
             tags_1 = soup_page.find("div", class_="row mb-n6 icon-box-shape-animation flex-wrap justify-content-center")
@@ -37,13 +46,10 @@ def parser(url:str, max_item: int):
                 url_gallery = link.a.get("href")
 
                 img = requests.get(f"https://luxury-yacht-brokerage.com/{url_gallery}", headers={'user-agent':f'{headers.random}'})
-
-
-                #img.raise_for_status()
                 try:
                     img.raise_for_status()
-                    print(url_gallery)
                     name_gallery = url_gallery.split("/")[-1]
+                    print(name_gallery)
                     with open(f'img/{title}/{name_gallery}', 'wb') as file_gallery:
                         file_gallery.write(img.content)
                 except requests.exceptions.HTTPError:
@@ -187,5 +193,5 @@ def write_csv(soup_page: list[Product]):
             ])
 
 if __name__ == "__main__":
-    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=1)
+    parser(url="https://luxury-yacht-brokerage.com/yacht-charter.html", max_item=2)
 
